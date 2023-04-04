@@ -1,5 +1,5 @@
 // Setup empty JS object to act as endpoint for all routes
-projectData = {};
+projectData = {temperature:10};
 dataStore = [];
 
 // Require Express to run server and routes
@@ -44,5 +44,6 @@ app.post("/posting", function(req, res){
     }
     dataStore.push(newEntry);
     console.log(dataStore);
+    res.send(newEntry);
 
 })

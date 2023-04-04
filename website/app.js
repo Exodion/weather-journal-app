@@ -24,7 +24,7 @@ async function clickFunction(event){
 
   let newTemperatureData = await getExternalData2(baseURL2, apiKey, latitude, longtitude);
 
-  let feelings = document.querySelector("#feelings").textContent;
+  let feelings = document.querySelector("#feelings").value;/////////////
 
   let newData = {
     lat: latitude,
@@ -79,7 +79,7 @@ async function postData(url, newDataSet){
       },
       body: JSON.stringify(newDataSet)
     });
-
+    console.log(newDataSet);//////////////////////
     try {
       const responseData = await response.json();
       console.log(responseData);
