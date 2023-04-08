@@ -3,7 +3,7 @@ let baseURL1 = "http://api.openweathermap.org/geo/1.0/zip?zip=";
 //http://api.openweathermap.org/geo/1.0/zip?zip={zip code},{country code}&appid={API key}
 let baseURL2 = "https://api.openweathermap.org/data/2.5/weather?lat=";
 //https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
-let apiKey = "9270a4389173e459d3b40cc27d850051";
+const apiKey = "9270a4389173e459d3b40cc27d850051";
 
 
 
@@ -36,19 +36,21 @@ async function clickFunction(event){
   };
 
   console.log(newData);
-  postData("http://localhost:8000/posting", newData);
+  await postData("/posting", newData); //added await 
   
-
-  let recievedData = getData("/");
+  let response = await getData("/all"); //added await
+  let recievedData = await response; //added await
 
   console.log(recievedData);
 
   let dateText = document.querySelector("#date").appendChild(document.createElement("p"));
   dateText.innerText = recievedData.date;
-  
-  //"<p>" + recievedData.date + "</p>");
-  //document.querySelector("#content").appendChild("<p>" + recievedData.feelings + "</p>");
-  //document.querySelector("#temp").appendChild("<p>" + recievedData.temperature + "</p>");
+
+  let tempText = document.querySelector("#temp").appendChild(document.createElement("p"));
+  tempText.innerText = Math.round(recievedData.temperature) + " deg";
+
+  let feelingsText = document.querySelector("#content").appendChild(document.createElement("p"));
+  feelingsText.innerText = recievedData.feelings;
 
   return console.log(longtitude +" " + latitude);
 }
@@ -59,7 +61,7 @@ async function getData(url){
   try {
     const retData = await request.json();
     console.log(retData);
-    //return responseData;
+    return retData;
   }
 
   catch (error){
@@ -93,43 +95,12 @@ async function postData(url, newDataSet){
 
 }
 
-
-
-
-/*  const postData = async ( url = '', data = {})=>{
-    console.log(data);
-      const response = await fetch(url, {
-      method: 'POST', 
-      credentials: 'same-origin',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-    // Body data type must match "Content-Type" header        
-      body: JSON.stringify(data), 
-    });
-
-      try {
-        const newData = await response.json();
-        console.log(newData);
-        return newData;
-      }catch(error) {
-      console.log("error", error);
-      }
-  }
-
-  postData('/add', {answer:42});
-*/
-
-
 async function getExternalData(baseURL1, apiKey, zipcode){
 
     const res = await fetch(baseURL1 + zipcode + "&appid=" + apiKey)
     try{
         const dataFromAPI = await res.json();
         console.log(dataFromAPI);
-       // let arrayLatLon = [dataFromAPI.lat, dataFromAPI.lon];
-      //  console.log(dataFromAPI.lat);
-       // console.log(dataFromAPI.lon);
         return dataFromAPI;
     }
 
@@ -155,8 +126,6 @@ async function getExternalData2(baseURL2, apiKey, latitude, longtitude){
   }  
 
 }
-
-/////////////////////////////////////////
 
 
 

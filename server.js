@@ -1,5 +1,5 @@
 // Setup empty JS object to act as endpoint for all routes
-projectData = {temperature:10};
+projectData = {};
 dataStore = [];
 
 // Require Express to run server and routes
@@ -26,14 +26,16 @@ const server = app.listen(port, function(){
     console.log(`server started on localhost port: ${port}`);
 });
 
-app.get("/", function (req, res){
-    res.send(projectData);
+app.get("/all", function (req, res){
+    res.send(JSON.stringify(projectData));
+    console.log("GET started");
     console.log(projectData);
+    
 })
 
 app.post("/posting", function(req, res){
 
-    let newData = req;
+    let newData = req.body; //most important change: added .body
     let newEntry = {
         temperature: newData.temperature,
         date: newData.date,
@@ -42,8 +44,9 @@ app.post("/posting", function(req, res){
         lon: newData.longtitude,
         feelings: newData.feelings
     }
-    dataStore.push(newEntry);
-    console.log(dataStore);
-    res.send(newEntry);
+    //dataStore.push(newEntry);
+    projectData = newEntry;
+    console.log(projectData);
+    res.send(JSON.stringify(projectData));
 
 })
