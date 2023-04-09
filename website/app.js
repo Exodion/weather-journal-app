@@ -9,7 +9,7 @@ const apiKey = "9270a4389173e459d3b40cc27d850051";
 
 // Create a new date instance dynamically with JS
 let d = new Date();
-let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+let newDate = d.getDate() + "." + (d.getMonth()+1) + "." + d.getFullYear();
 
 document.getElementById("generate").addEventListener("click", clickFunction);
 
